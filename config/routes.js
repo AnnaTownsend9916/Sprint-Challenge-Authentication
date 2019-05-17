@@ -1,10 +1,12 @@
+require("dotenv").config();
 const axios = require("axios");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+
 const Users = require("../config/users-model.js");
-	
-	const { authenticate, generateToken } = require("../auth/authenticate");
+const db = require("../database/dbConfig")
+	const { authenticate } = require("../auth/authenticate");
 	
 module.exports = server => {
   server.post("/api/register", register);
@@ -14,45 +16,55 @@ module.exports = server => {
 
 function register(req, res) {
   // implement user registration
-  let user = req.body;
-  const hash = bcrypt.hashSync(user.password, 9);
-  user.password = hash;
+  const userInfo = req.body;
 
-  Users.add(user)
+  const hash = bcrypt.hashSync(userInfo.password, 12);
 
-    .then(user => {
-      console.log("add user:", user);
-      const token = generateToken(user);
-      console.log("registration token:", token);
-      res.status(201).json({ user, token });
+  userInfo.password = hash;
+
+  db('users')
+    .insert(userInfo)
+    .then(ids => {
+      res.status(201).json(ids);
     })
-    .catch(error => {
-      res.status(500).json(error);
-    });
+    .catch(err => res.status(500).json(err));
+}
+
+function generateToken(user) {
+  const payload = {
+    username: user.username,    
+  };
+
+  const secret = process.env.JWT_SECRET;
+
+  const options = {
+    expiresIn: '45m',
+  };
+
+  return jwt.sign(payload, secret, options);
 }
 
 function login(req, res) {
   // implement user login
-  let { username, password } = req.body;
-  Users.findBy({ username })
+  const creds = req.body;
 
+  db('users')
+    .where({ username: creds.username })
     .first()
     .then(user => {
-      console.log(user);
-      if (user && bcrypt.compareSync(password, user.password)) {
+      if (user && bcrypt.compareSync(creds.password, user.password)) {
+        // login is successful
+        // create the token
         const token = generateToken(user);
-        res.status(200).json({
-          message: `Welcome ${user.username}!`,
-          token
-        });
+
+        res.status(200).json({ message: `welcome ${user.name}`, token });
       } else {
-        res.status(401).json({ message: "Invalid Credentials" });
+        res.status(401).json({ you: 'shall not pass!!' });
       }
     })
-    .catch(error => {
-      res.status(500).json(error);
-    });
-	}
+    .catch(err => res.status(500).json(err));
+}
+	
 
 
 function getJokes(req, res) {
@@ -68,15 +80,4 @@ function getJokes(req, res) {
     .catch(err => {
       res.status(500).json({ message: "Can't retrieve jokes", error: err });
     });
-}
-function generateToken(user) {
-  const payload = {
-    subject: user.id,
-    username: user.username
-  };
-  const options = {
-    expiresIn: "1h"
-  };
-
-  return jwt.sign(payload, authenticate.jwtKey, options);
 }
