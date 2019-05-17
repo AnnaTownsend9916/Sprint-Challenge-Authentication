@@ -19,14 +19,17 @@
   "homepage": "https://github.com/LambdaSchool/Sprint-Challenge-Authentication#readme",
   "dependencies": {
     "axios": "^0.18.0",
+    "bcrypt": "^3.0.6",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "dotenv": "^7.0.0",
+    "dotenv": "^8.0.0",
+    "epress": "^0.0.1-security",
     "express": "^4.16.4",
-    "helmet": "^3.16.0",
+    "helmet": "^3.18.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.16.5",
-    "sqlite3": "^4.0.6"
+    "morgan": "^1.9.1",
+    "sqlite3": "^4.0.8"
   },
   "devDependencies": {
     "nodemon": "^1.19.0"

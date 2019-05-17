@@ -1,6 +1,9 @@
-const express = require('express');
-const cors = require('cors');
 const helmet = require('helmet');
+const express = require("express");
+const cors = require("cors");
+const helmet = require("helmet");
+const morgan = require("morgan");
+
 
 const configureRoutes = require('../config/routes.js');
 
