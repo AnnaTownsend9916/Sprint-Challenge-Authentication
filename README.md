@@ -29,20 +29,40 @@ Implement an User Authentication System in order to access the jokes from the Jo
 Demonstrate your understanding of this week's concepts by answering the following free-form questions. Edit this document to include your answers after each question. Make sure to leave a blank line above and below your answer so it is clear and easy to read by your project manager.
 
 1. What is the purpose of using _sessions_?
+
+ Sessions give us a way to persist data across requests. Sessions can make for a good user experience because you can set up them to where if you change pages the server will remember who you are, you won't have to login again.
+
+
 1. What does bcrypt do to help us store passwords in a secure manner.
+
+Bcrypt helps us hash our passwords by giving us a Key Derivation Function or hashing function, allowing our passwords to be stored as cryptographic hashes instead of plain text. The one way function it uses also makes it near impossible to turn the hash back into the password text.
+
+
 1. What does bcrypt do to slow down attackers?
+
+Bcrypt adds time to the algorithm. Hashing rounds hash the information multiple times.
+
+
 1. What are the three parts of the JSON Web Token?
+
+ The header, the payload and the signature.
+
+   The header contains the algorithm and the token type.
+   The payload includes claims (permissions), information, or any data we want to store in the token.
+
+   The signature is the header and payload encoded and stringed together, and then signed with a secret.
+
 
 ## Project Set Up
 
 Follow these steps to set up and work on your project:
 
-- [ ] Create a forked copy of this project.
-- [ ] Add PM as collaborator on Github.
-- [ ] Clone your OWN version of Repo (Not Lambda's by mistake!).
-- [ ] Create a new Branch on the clone: git checkout -b `<firstName-lastName>`.
-- [ ] Implement the project on this Branch, committing changes regularly.
-- [ ] Push commits: git push origin `<firstName-lastName>`.
+- [x ] Create a forked copy of this project.
+- [ x] Add PM as collaborator on Github.
+- [ x] Clone your OWN version of Repo (Not Lambda's by mistake!).
+- [ x] Create a new Branch on the clone: git checkout -b `<firstName-lastName>`.
+- [x ] Implement the project on this Branch, committing changes regularly.
+- [ x] Push commits: git push origin `<firstName-lastName>`.
 
 Follow these steps for completing your project:
 
